@@ -80,6 +80,21 @@ public class CombatConfigImpl implements CombatConfig{
     }
 
     @Override
+    public boolean isCommandsBlockedDuringCombat() {
+        return this.configuration.getBoolean("commands-blocked-during-combat");
+    }
+
+    @Override
+    public Set<String> getCombatCommandWhitelist() {
+        return new HashSet<>(this.configuration.getStringList("combat-command-whitelist"));
+    }
+
+    @Override
+    public Message getCombatCommandBlockedMessage() {
+        return this.getMessage("combat-command-blocked-message");
+    }
+
+    @Override
     public Set<String> getCombatBlockedRegions() {
         return new HashSet<>(this.configuration.getStringList("combat-blocked-regions"));
     }

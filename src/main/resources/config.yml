@@ -21,4 +21,9 @@ remove-combat-message:
     content: "Twoj oponent {opponent} zginal. Twoja walka sie konczy!"
 combat-from-mobs: true
 combat-from-projectiles: true
+commands-blocked-during-combat: true
+combat-command-whitelist: ["msg", "r", "reply"]
+combat-command-blocked-message:
+    type: TITLE
+    content: "&c&l✖ \n &7Nie mozesz uzyc komendy &f&n{command}&r&7 podczas walki!"
 combat-blocked-regions: ["spawn"]

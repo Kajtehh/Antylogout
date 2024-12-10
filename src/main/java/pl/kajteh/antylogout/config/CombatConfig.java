@@ -15,6 +15,9 @@ public interface CombatConfig {
     boolean isRemoveCombatOnOpponentDeath();
     Message getRemoveCombatMessage();
     boolean isCombatFromMobs();
-    boolean isCombatFromProjectiles();
-    Set<String> getCombatBlockedRegions();
+    boolean isCombatFromProjectiles(); // TODO
+    boolean isCommandsBlockedDuringCombat();
+    Set<String> getCombatCommandWhitelist();
+    Message getCombatCommandBlockedMessage();
+    Set<String> getCombatBlockedRegions(); // TODO
 }

@@ -46,10 +46,10 @@ public class Message {
                 player.sendActionBar(messageContent[0]);
                 break;
             case TITLE:
-                final String title = messageContent.length > 0 ? messageContent[0] : "";
-                final String subtitle = messageContent.length > 1 ? messageContent[1] : "";
+                final String title = messageContent.length > 0 ? messageContent[0].trim() : "";
+                final String subtitle = messageContent.length > 1 ? messageContent[1].trim() : "";
 
-                player.sendTitle(new Title(title, subtitle));
+                player.sendTitle(new Title(title, subtitle, 10, 70, 20));
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported message type: " + this.type);

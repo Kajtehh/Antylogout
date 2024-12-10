@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pl.kajteh.antylogout.config.CombatConfig;
 
@@ -120,10 +121,31 @@ public class CombatController implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
 
-        if (!player.hasPermission(this.combatConfig.getCombatBypassPermission())) {
+        if (!this.hasBypassPermission(player)) {
             player.setHealth(0);
         }
 
         this.combatCache.removeCombat(player.getUniqueId());
+    }
+
+    @EventHandler
+    public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        final Player player = event.getPlayer();
+        final String command = event.getMessage().split(" ")[0];
+
+        if(!this.combatConfig.isCommandsBlockedDuringCombat()
+                || this.hasBypassPermission(player)
+                || this.combatConfig.getCombatCommandWhitelist().contains(command)
+                || !this.combatCache.getCombat(player.getUniqueId()).isPresent()) {
+            return;
+        }
+
+        event.setCancelled(true);
+
+        this.combatConfig.getCombatCommandBlockedMessage().send(player, "command", command);
+    }
+
+    private boolean hasBypassPermission(Player player) {
+        return player.hasPermission(this.combatConfig.getCombatBypassPermission());
     }
 }
