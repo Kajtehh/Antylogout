@@ -18,6 +18,14 @@ public class CombatCache {
         return Optional.ofNullable(this.combatMap.get(player));
     }
 
+    public Optional<UUID> findCombatPlayerByOpponent(UUID opponent) {
+        return this.combatMap.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().getOpponent().equals(opponent))
+                .map(Map.Entry::getKey)
+                .findFirst();
+    }
+
     public Set<UUID> getCombatPlayers() {
         return this.combatMap.keySet();
     }

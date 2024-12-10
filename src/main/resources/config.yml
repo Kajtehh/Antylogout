@@ -8,6 +8,17 @@ combat-end-messages:
       content: "Twoja walka dobiegla konca"
     - type: CHAT
       content: "Twoja walka dobiegla konca"
+combat-start-notifications-enabled: true
+combat-start-message-attacker:
+    type: CHAT
+    content: "Rozpoczynasz walke z {victim}"
+combat-start-message-victim:
+    type: CHAT
+    content: "Zostales zaatakowany/a przez {attacker}. Jestes teraz w walce!"
+remove-combat-on-opponent-death: true
+remove-combat-message:
+    type: CHAT
+    content: "Twoj oponent {opponent} zginal. Twoja walka sie konczy!"
 combat-from-mobs: true
 combat-from-projectiles: true
 combat-blocked-regions: ["spawn"]

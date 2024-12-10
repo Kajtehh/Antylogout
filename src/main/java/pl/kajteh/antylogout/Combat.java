@@ -18,7 +18,7 @@ public class Combat {
         return this.startTime;
     }
 
-    public UUID getAnotherEntity() {
+    public UUID getOpponent() {
         return this.opponent;
     }
 

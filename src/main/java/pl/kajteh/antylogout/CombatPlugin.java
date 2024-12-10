@@ -23,7 +23,7 @@ public final class CombatPlugin extends JavaPlugin {
 
         this.combatCache = new CombatCache();
 
-        this.getServer().getPluginManager().registerEvents(new CombatController(this.combatCache), this);
+        this.getServer().getPluginManager().registerEvents(new CombatController(this.combatCache, this.combatConfig), this);
         this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CombatRunnable(this.combatCache, this.combatConfig), 20L, 20L);
     }
 

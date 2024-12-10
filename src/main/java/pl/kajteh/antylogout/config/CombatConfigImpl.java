@@ -27,8 +27,23 @@ public class CombatConfigImpl implements CombatConfig{
     }
 
     @Override
+    public boolean isCombatStartNotificationsEnabled() {
+        return this.configuration.getBoolean("combat-start-notifications-enabled");
+    }
+
+    @Override
+    public Message getCombatStartMessageAttacker() {
+        return this.getMessage("combat-start-message-attacker");
+    }
+
+    @Override
+    public Message getCombatStartMessageVictim() {
+        return this.getMessage("combat-start-message-victim");
+    }
+
+    @Override
     public Message getCombatMessage() {
-        return new Message(this.configuration.getConfigurationSection("combat-message").getValues(false));
+        return this.getMessage("combat-message");
     }
 
     @Override
@@ -41,6 +56,16 @@ public class CombatConfigImpl implements CombatConfig{
         rawMessages.forEach(rawMessage -> messages.add(new Message(rawMessage)));
 
         return messages;
+    }
+
+    @Override
+    public boolean isRemoveCombatOnOpponentDeath() {
+        return this.configuration.getBoolean("remove-combat-on-opponent-death");
+    }
+
+    @Override
+    public Message getRemoveCombatMessage() {
+        return this.getMessage("remove-combat-message");
     }
 
 
@@ -57,5 +82,9 @@ public class CombatConfigImpl implements CombatConfig{
     @Override
     public Set<String> getCombatBlockedRegions() {
         return new HashSet<>(this.configuration.getStringList("combat-blocked-regions"));
+    }
+
+    private Message getMessage(String path) {
+        return new Message(this.configuration.getConfigurationSection(path).getValues(false));
     }
 }
