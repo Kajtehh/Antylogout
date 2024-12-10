@@ -1,0 +1,13 @@
+combat-bypass-permission: "antylogout.bypass"
+combat-duration: 20
+combat-message:
+    type: ACTION_BAR
+    content: "&4&lAntylogout &8&l| &c{time}"
+combat-end-messages:
+    - type: ACTION_BAR
+      content: "Twoja walka dobiegla konca"
+    - type: CHAT
+      content: "Twoja walka dobiegla konca"
+combat-from-mobs: true
+combat-from-projectiles: true
+combat-blocked-regions: ["spawn"]

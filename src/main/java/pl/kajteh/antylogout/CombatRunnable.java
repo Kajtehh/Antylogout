@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import pl.kajteh.antylogout.config.CombatConfig;
 
 import java.time.Instant;
-import java.util.Set;
 import java.util.UUID;
 
 public class CombatRunnable implements Runnable {
@@ -21,6 +20,7 @@ public class CombatRunnable implements Runnable {
     @Override
     public void run() {
         final Instant now = Instant.now();
+        final long combatDuration = this.combatConfig.getCombatDuration();
 
         for (UUID uuid : this.combatCache.getCombatPlayers()) {
             final Combat combat = this.combatCache.getCombat(uuid).orElse(null);
@@ -29,22 +29,20 @@ public class CombatRunnable implements Runnable {
                 continue;
             }
 
-            final Player player = (Player) Bukkit.getOfflinePlayer(uuid);
+            final Player player = Bukkit.getPlayer(uuid);
 
             if (player == null || !player.isOnline()) {
                 continue;
             }
 
-            final long combatDuration = this.combatConfig.getCombatDuration();
-
             if (combat.hasElapsed(now, combatDuration)) {
                 this.combatCache.removeCombat(uuid);
                 this.combatConfig.getCombatEndMessages().forEach(message -> message.send(player));
-                return;
+                continue;
             }
 
             final long timeLeft = combat.getTimeLeft(now, combatDuration);
-            player.sendActionBar(String.format("Walka %ss", timeLeft));
+            this.combatConfig.getCombatMessage().send(player, "time", timeLeft);
         }
     }
 }

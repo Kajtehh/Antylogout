@@ -9,7 +9,7 @@
   <version>2.0</version>
   <packaging>jar</packaging>
 
-  <name>antylogout</name>
+  <name>Antylogout</name>
 
   <properties>
     <java.version>1.8</java.version>

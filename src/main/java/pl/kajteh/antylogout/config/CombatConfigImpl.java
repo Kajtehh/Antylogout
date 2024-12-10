@@ -4,8 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import pl.kajteh.antylogout.CombatPlugin;
 import pl.kajteh.antylogout.message.Message;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class CombatConfigImpl implements CombatConfig{
 
@@ -29,16 +28,21 @@ public class CombatConfigImpl implements CombatConfig{
 
     @Override
     public Message getCombatMessage() {
-        return (Message) this.configuration.get("combat-message");
+        return new Message(this.configuration.getConfigurationSection("combat-message").getValues(false));
     }
 
     @Override
     public Set<Message> getCombatEndMessages() {
+        final Set<Message> messages = new HashSet<>();
+
         @SuppressWarnings("unchecked")
-        final Set<Message> messages = (Set<Message>) this.configuration.get("combat-end-messages");
+        final List<Map<String, Object>> rawMessages = (List<Map<String, Object>>) this.configuration.getList("combat-end-messages");
+
+        rawMessages.forEach(rawMessage -> messages.add(new Message(rawMessage)));
 
         return messages;
     }
+
 
     @Override
     public boolean isCombatFromMobs() {
