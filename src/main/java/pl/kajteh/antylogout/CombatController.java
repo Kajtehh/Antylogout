@@ -94,11 +94,15 @@ public class CombatController implements Listener {
     }
 
     private void handleCombatRemoval(Entity entity, boolean isPlayer) {
+        final UUID entityId = entity.getUniqueId();
+
+        if (isPlayer) {
+            this.combatCache.removeCombat(entityId);
+        }
+
         if (!this.combatConfig.isRemoveCombatOnOpponentDeath()) {
             return;
         }
-
-        final UUID entityId = entity.getUniqueId();
 
         this.combatCache.findCombatPlayerByOpponent(entityId).ifPresent(playerId -> {
             this.combatCache.removeCombat(playerId);
@@ -111,10 +115,6 @@ public class CombatController implements Listener {
 
             this.combatConfig.getRemoveCombatMessage().send(player, "opponent", entity.getName());
         });
-
-        if (isPlayer) {
-            this.combatCache.removeCombat(entityId);
-        }
     }
 
     @EventHandler
