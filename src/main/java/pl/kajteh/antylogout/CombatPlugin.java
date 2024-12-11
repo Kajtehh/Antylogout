@@ -1,6 +1,5 @@
 package pl.kajteh.antylogout;
 
-import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.kajteh.antylogout.api.AntylogoutAPI;
