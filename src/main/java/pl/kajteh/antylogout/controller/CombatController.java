@@ -1,6 +1,7 @@
-package pl.kajteh.antylogout;
+package pl.kajteh.antylogout.controller;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import pl.kajteh.antylogout.CombatCache;
 import pl.kajteh.antylogout.config.CombatConfig;
 
 import java.util.UUID;
@@ -70,7 +72,6 @@ public class CombatController implements Listener {
 
         if (entity instanceof LivingEntity) {
             final LivingEntity livingEntity = (LivingEntity) entity;
-
             return (livingEntity.getCustomName() != null ? livingEntity.getCustomName() : livingEntity.getType().name().toLowerCase()).trim();
         }
 
@@ -107,13 +108,13 @@ public class CombatController implements Listener {
         this.combatCache.findCombatPlayerByOpponent(entityId).ifPresent(playerId -> {
             this.combatCache.removeCombat(playerId);
 
-            final Player player = (Player) Bukkit.getOfflinePlayer(playerId);
+            final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerId);
 
-            if (player == null || !player.isOnline()) {
-                return;
+            if (offlinePlayer.isOnline()) {
+                final Player player = (Player) offlinePlayer;
+
+                this.combatConfig.getRemoveCombatMessage().send(player, "opponent", entity.getName());
             }
-
-            this.combatConfig.getRemoveCombatMessage().send(player, "opponent", entity.getName());
         });
     }
 

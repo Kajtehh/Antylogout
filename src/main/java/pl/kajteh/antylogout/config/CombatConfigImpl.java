@@ -5,6 +5,7 @@ import pl.kajteh.antylogout.CombatPlugin;
 import pl.kajteh.antylogout.message.Message;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CombatConfigImpl implements CombatConfig{
 
@@ -48,14 +49,7 @@ public class CombatConfigImpl implements CombatConfig{
 
     @Override
     public Set<Message> getCombatEndMessages() {
-        final Set<Message> messages = new HashSet<>();
-
-        @SuppressWarnings("unchecked")
-        final List<Map<String, Object>> rawMessages = (List<Map<String, Object>>) this.configuration.getList("combat-end-messages");
-
-        rawMessages.forEach(rawMessage -> messages.add(new Message(rawMessage)));
-
-        return messages;
+        return this.getMessages("combat-end-message");
     }
 
     @Override
@@ -99,7 +93,27 @@ public class CombatConfigImpl implements CombatConfig{
         return new HashSet<>(this.configuration.getStringList("combat-blocked-regions"));
     }
 
+    @Override
+    public double getCombatBlockedRegionKnockbackMultiplier() {
+        return this.configuration.getDouble("combat-blocked-region-knockback-multiplier");
+    }
+
+    @Override
+    public Message getCombatBlockedRegionEnterMessage() {
+        return this.getMessage("combat-blocked-region-enter-message");
+    }
+
     private Message getMessage(String path) {
-        return new Message(this.configuration.getConfigurationSection(path).getValues(false));
+        return new Message(Objects.requireNonNull(this.configuration.getConfigurationSection(path)).getValues(false));
+    }
+
+    private Set<Message> getMessages(String path) {
+        @SuppressWarnings("unchecked")
+        final List<Map<String, Object>> rawMessages = (List<Map<String, Object>>) this.configuration.getList(path);
+
+        assert rawMessages != null;
+        return rawMessages.stream()
+                .map(Message::new)
+                .collect(Collectors.toSet());
     }
 }

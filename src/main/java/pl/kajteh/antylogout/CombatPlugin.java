@@ -1,13 +1,18 @@
 package pl.kajteh.antylogout;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.kajteh.antylogout.api.AntylogoutAPI;
 import pl.kajteh.antylogout.api.AntylogoutAPIImpl;
 import pl.kajteh.antylogout.config.CombatConfig;
 import pl.kajteh.antylogout.config.CombatConfigImpl;
+import pl.kajteh.antylogout.controller.CombatRegionController;
+import pl.kajteh.antylogout.controller.CombatController;
 
 public final class CombatPlugin extends JavaPlugin {
+
+    //private static final int BSTATS_PLUGIN_ID = 24122; TODO
 
     private AntylogoutAPI api;
     private CombatCache combatCache;
@@ -20,11 +25,19 @@ public final class CombatPlugin extends JavaPlugin {
         this.getServer().getServicesManager().register(AntylogoutAPI.class, this.api, this, ServicePriority.Normal);
 
         this.combatConfig = new CombatConfigImpl(this);
-
         this.combatCache = new CombatCache();
 
+        final long taskInterval = 20L;
+
+        this.getServer().getScheduler()
+                .runTaskTimerAsynchronously(this, new CombatRunnable(this.combatCache, this.combatConfig), taskInterval, taskInterval);
+
         this.getServer().getPluginManager().registerEvents(new CombatController(this.combatCache, this.combatConfig), this);
-        this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CombatRunnable(this.combatCache, this.combatConfig), 20L, 20L);
+
+        if(this.getServer().getPluginManager().isPluginEnabled("WorldGuard")) {
+            this.getServer().getPluginManager()
+                    .registerEvents(new CombatRegionController(this.combatCache, this.combatConfig), this);
+        }
     }
 
     public CombatCache getCombatCache() {

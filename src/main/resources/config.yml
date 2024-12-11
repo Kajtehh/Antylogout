@@ -3,7 +3,7 @@ combat-duration: 20
 combat-message:
     type: ACTION_BAR
     content: "&4&lAntylogout &8&l| &c{time}"
-combat-end-messages:
+combat-end-message:
     - type: ACTION_BAR
       content: "Twoja walka dobiegla konca"
     - type: CHAT
@@ -27,3 +27,7 @@ combat-command-blocked-message:
     type: TITLE
     content: "&c&l✖ \n &7Nie mozesz uzyc komendy &f&n{command}&r&7 podczas walki!"
 combat-blocked-regions: ["spawn"]
+combat-blocked-region-knockback-multiplier: 1
+combat-blocked-region-enter-message:
+    type: CHAT
+    content: "&c&l✖ &8&l| &7Nie mozesz wejsc na &fteren&7 regionu &f&n{region}&r&7 podczas walki!"

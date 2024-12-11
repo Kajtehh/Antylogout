@@ -1,6 +1,7 @@
 package pl.kajteh.antylogout.message;
 
-import com.destroystokyo.paper.Title;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -43,13 +44,13 @@ public class Message {
                 player.sendMessage(messageContent);
                 break;
             case ACTION_BAR:
-                player.sendActionBar(messageContent[0]);
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(messageContent[0]));
                 break;
             case TITLE:
                 final String title = messageContent.length > 0 ? messageContent[0].trim() : "";
                 final String subtitle = messageContent.length > 1 ? messageContent[1].trim() : "";
 
-                player.sendTitle(new Title(title, subtitle, 10, 70, 20));
+                player.sendTitle(title, subtitle, 10, 70, 20);
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported message type: " + this.type);
