@@ -9,9 +9,12 @@ import java.util.stream.Collectors;
 
 public class CombatConfigImpl implements CombatConfig{
 
+    private final CombatPlugin plugin;
     private final FileConfiguration configuration;
 
     public CombatConfigImpl(CombatPlugin plugin) {
+        this.plugin = plugin;
+
         plugin.saveDefaultConfig();
 
         this.configuration = plugin.getConfig();
@@ -52,14 +55,25 @@ public class CombatConfigImpl implements CombatConfig{
         return this.getMessages("combat-end-message");
     }
 
+    /*
+    @Override
+    public boolean isCombatBossBarEnabled() {
+        return this.configuration.getBoolean("combat-boss-bar-enabled");
+    }
+
+    @Override
+    public CombatBossBar getCombatBossBar() {
+        return this.getBossBar("combat-boss-bar");
+    }*/
+
     @Override
     public boolean isRemoveCombatOnOpponentDeath() {
         return this.configuration.getBoolean("remove-combat-on-opponent-death");
     }
 
     @Override
-    public Message getRemoveCombatMessage() {
-        return this.getMessage("remove-combat-message");
+    public Set<Message> getRemoveCombatMessage() {
+        return this.getMessages("remove-combat-message");
     }
 
 
@@ -84,8 +98,8 @@ public class CombatConfigImpl implements CombatConfig{
     }
 
     @Override
-    public Message getCombatCommandBlockedMessage() {
-        return this.getMessage("combat-command-blocked-message");
+    public Set<Message> getCombatCommandBlockedMessage() {
+        return this.getMessages("combat-command-blocked-message");
     }
 
     @Override
@@ -99,8 +113,18 @@ public class CombatConfigImpl implements CombatConfig{
     }
 
     @Override
-    public Message getCombatBlockedRegionEnterMessage() {
-        return this.getMessage("combat-blocked-region-enter-message");
+    public Set<Message> getCombatBlockedRegionEnterMessage() {
+        return this.getMessages("combat-blocked-region-enter-message");
+    }
+
+    @Override
+    public void save() {
+        this.plugin.saveConfig();
+    }
+
+    @Override
+    public void reload() {
+        this.plugin.reloadConfig();
     }
 
     private Message getMessage(String path) {
@@ -116,4 +140,5 @@ public class CombatConfigImpl implements CombatConfig{
                 .map(Message::new)
                 .collect(Collectors.toSet());
     }
+
 }

@@ -5,16 +5,15 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pl.kajteh.antylogout.CombatCache;
 import pl.kajteh.antylogout.config.CombatConfig;
+import pl.kajteh.antylogout.util.EntityUtil;
 
 import java.util.UUID;
 
@@ -30,25 +29,53 @@ public class CombatController implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        final Entity attacker = event.getDamager();
         final Entity victim = event.getEntity();
 
+        Entity attacker = event.getDamager();
+
+        if (this.combatConfig.isCombatFromProjectiles() && attacker instanceof Projectile) {
+            final Projectile projectile = (Projectile) attacker;
+
+            if (projectile.getShooter() instanceof Player) {
+                attacker = (Entity) projectile.getShooter();
+            } else if(this.combatConfig.isCombatFromMobs() && projectile.getShooter() instanceof LivingEntity) {
+                attacker = (Entity) projectile.getShooter();
+            }
+        }
+
+        this.handleCombat(attacker, victim);
+    }
+
+    private void handleCombat(Entity attacker, Entity victim) {
         if (!(attacker instanceof Player) && !(victim instanceof Player)) {
             return;
         }
 
+        this.sendCombatStartMessage(attacker, victim);
+
+        if (this.combatConfig.isCombatFromMobs()) {
+            if (attacker instanceof Player) {
+                this.startCombat(attacker, victim);
+            }
+
+            if (victim instanceof Player) {
+                this.startCombat(victim, attacker);
+            }
+            return;
+        }
+
+        if (attacker instanceof Player && victim instanceof Player) {
+            this.startCombat(attacker, victim);
+            this.startCombat(victim, attacker);
+        }
+    }
+
+
+    private void startCombat(Entity attacker, Entity victim) {
         final UUID attackerUUID = attacker.getUniqueId();
         final UUID victimUUID = victim.getUniqueId();
 
-        this.sendCombatStartMessage(attacker, victim);
-
-        if (this.combatConfig.isCombatFromMobs() || victim instanceof Player) {
-            this.combatCache.addCombat(attackerUUID, victimUUID);
-        }
-
-        if (this.combatConfig.isCombatFromMobs() || attacker instanceof Player) {
-            this.combatCache.addCombat(victimUUID, attackerUUID);
-        }
+        this.combatCache.addCombat(attackerUUID, victimUUID, this.combatConfig.getCombatDuration());
     }
 
     private void sendCombatStartMessage(Entity attacker, Entity victim) {
@@ -57,27 +84,13 @@ public class CombatController implements Listener {
         }
 
         if(attacker instanceof Player && !this.combatCache.getCombat(attacker.getUniqueId()).isPresent()) {
-            this.combatConfig.getCombatStartMessageAttacker().send((Player) attacker, "victim", this.getEntityName(victim));
+            this.combatConfig.getCombatStartMessageAttacker().send((Player) attacker, "victim", EntityUtil.getEntityName(victim));
         }
 
         if(victim instanceof Player && !this.combatCache.getCombat(victim.getUniqueId()).isPresent()) {
-            this.combatConfig.getCombatStartMessageVictim().send((Player) victim, "attacker", this.getEntityName(attacker));
+            this.combatConfig.getCombatStartMessageVictim().send((Player) victim, "attacker", EntityUtil.getEntityName(attacker));
         }
     }
-
-    private String getEntityName(Entity entity) {
-        if(entity instanceof Player) {
-            return entity.getName();
-        }
-
-        if (entity instanceof LivingEntity) {
-            final LivingEntity livingEntity = (LivingEntity) entity;
-            return (livingEntity.getCustomName() != null ? livingEntity.getCustomName() : livingEntity.getType().name().toLowerCase()).trim();
-        }
-
-        return "Unknown";
-    }
-
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -95,6 +108,10 @@ public class CombatController implements Listener {
     }
 
     private void handleCombatRemoval(Entity entity, boolean isPlayer) {
+        if(entity == null) {
+            return;
+        }
+
         final UUID entityId = entity.getUniqueId();
 
         if (isPlayer) {
@@ -112,8 +129,7 @@ public class CombatController implements Listener {
 
             if (offlinePlayer.isOnline()) {
                 final Player player = (Player) offlinePlayer;
-
-                this.combatConfig.getRemoveCombatMessage().send(player, "opponent", entity.getName());
+                this.combatConfig.getRemoveCombatMessage().forEach(message -> message.send(player, "opponent", entity.getName()));
             }
         });
     }
@@ -134,7 +150,7 @@ public class CombatController implements Listener {
         final Player player = event.getPlayer();
         final String command = event.getMessage().split(" ")[0];
 
-        if(!this.combatConfig.isCommandsBlockedDuringCombat()
+        if (!this.combatConfig.isCommandsBlockedDuringCombat()
                 || this.hasBypassPermission(player)
                 || this.combatConfig.getCombatCommandWhitelist().contains(command)
                 || !this.combatCache.getCombat(player.getUniqueId()).isPresent()) {
@@ -142,8 +158,7 @@ public class CombatController implements Listener {
         }
 
         event.setCancelled(true);
-
-        this.combatConfig.getCombatCommandBlockedMessage().send(player, "command", command);
+        this.combatConfig.getCombatCommandBlockedMessage().forEach(message -> message.send(player, "command", command));
     }
 
     private boolean hasBypassPermission(Player player) {

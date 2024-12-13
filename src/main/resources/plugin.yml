@@ -3,3 +3,6 @@ version: '${project.version}'
 main: pl.kajteh.antylogout.CombatPlugin
 api-version: '1.13'
 softdepend: ["WorldGuard", "WorldEdit"]
+commands:
+    antylogout:
+        aliases: ["combat", "antilogout"]

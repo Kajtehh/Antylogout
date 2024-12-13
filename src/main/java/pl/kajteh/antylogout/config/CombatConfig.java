@@ -9,23 +9,32 @@ public interface CombatConfig {
     long getCombatDuration();
 
     boolean isCombatFromMobs();
-    boolean isCombatFromProjectiles(); // TODO
+    boolean isCombatFromProjectiles();
 
     Message getCombatMessage();
     Set<Message> getCombatEndMessages();
+
+    /* TODO
+    boolean isCombatBossBarEnabled();
+    CombatBossBar getCombatBossBar();
+    CombatBossBar getCombatEndBossBar();
+     */
 
     boolean isCombatStartNotificationsEnabled();
     Message getCombatStartMessageAttacker();
     Message getCombatStartMessageVictim();
 
     boolean isRemoveCombatOnOpponentDeath();
-    Message getRemoveCombatMessage();
+    Set<Message> getRemoveCombatMessage();
 
     boolean isCommandsBlockedDuringCombat();
     Set<String> getCombatCommandWhitelist();
-    Message getCombatCommandBlockedMessage();
+    Set<Message> getCombatCommandBlockedMessage();
 
-    Set<String> getCombatBlockedRegions(); // TODO
+    Set<String> getCombatBlockedRegions();
     double getCombatBlockedRegionKnockbackMultiplier();
-    Message getCombatBlockedRegionEnterMessage();
+    Set<Message> getCombatBlockedRegionEnterMessage();
+
+    void save();
+    void reload();
 }

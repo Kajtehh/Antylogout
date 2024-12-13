@@ -40,13 +40,12 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!--
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>pl.kajteh.antylogout.libs.bstats</shadedPattern>
                         </relocation>
-                    </relocations>-->
+                    </relocations>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
@@ -95,12 +94,11 @@
             <version>7.0.7</version>
             <scope>provided</scope>
         </dependency>
-        <!--
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>3.0.2</version>
             <scope>compile</scope>
-        </dependency>-->
+        </dependency>
     </dependencies>
 </project>

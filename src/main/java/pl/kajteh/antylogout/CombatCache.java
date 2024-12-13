@@ -1,13 +1,18 @@
 package pl.kajteh.antylogout;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CombatCache {
 
     private final Map<UUID, Combat> combatMap = new HashMap<>();
 
-    public void addCombat(UUID player, UUID opponent) {
-        this.combatMap.put(player, new Combat(opponent));
+    public void addCombat(UUID player, UUID opponent, long duration) {
+        this.combatMap.put(player, new Combat(opponent, duration));
+    }
+
+    public void addCombat(UUID player, long duration) {
+        this.combatMap.put(player, new Combat(null, duration));
     }
 
     public void removeCombat(UUID player) {
@@ -27,6 +32,6 @@ public class CombatCache {
     }
 
     public Set<UUID> getCombatPlayers() {
-        return this.combatMap.keySet();
+        return this.combatMap.keySet().stream().filter(Objects::nonNull).collect(Collectors.toSet());
     }
 }

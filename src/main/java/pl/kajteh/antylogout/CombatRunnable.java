@@ -20,28 +20,29 @@ public class CombatRunnable implements Runnable {
     @Override
     public void run() {
         final Instant now = Instant.now();
-        final long combatDuration = this.combatConfig.getCombatDuration();
 
         for (UUID uuid : this.combatCache.getCombatPlayers()) {
-            final Combat combat = this.combatCache.getCombat(uuid).orElse(null);
-
-            if (combat == null) {
-                continue;
-            }
-
             final Player player = Bukkit.getPlayer(uuid);
 
             if (player == null || !player.isOnline()) {
                 continue;
             }
 
-            if (combat.hasElapsed(now, combatDuration)) {
+            final Combat combat = this.combatCache.getCombat(uuid).orElse(null);
+
+            if (combat == null) {
+                continue;
+            }
+
+            final long timeLeft = combat.getTimeLeft(now);
+            final boolean hasElapsed = combat.hasElapsed(now);
+
+            if (hasElapsed) {
                 this.combatCache.removeCombat(uuid);
                 this.combatConfig.getCombatEndMessages().forEach(message -> message.send(player));
                 continue;
             }
 
-            final long timeLeft = combat.getTimeLeft(now, combatDuration);
             this.combatConfig.getCombatMessage().send(player, "time", timeLeft);
         }
     }

@@ -58,9 +58,6 @@ public class CombatRegionController implements Listener {
                 .filter(region -> this.combatConfig.getCombatBlockedRegions().contains(region.getId()))
                 .findFirst()
                 .ifPresent(region -> {
-                    this.combatConfig.getCombatBlockedRegionEnterMessage()
-                            .send(player, "region", region.getId());
-
                     final Location regionCenter = this.getRegionCenter(region, player);
                     final Location playerOffset = player.getLocation().subtract(regionCenter);
 
@@ -70,6 +67,9 @@ public class CombatRegionController implements Listener {
                     final Vector knockbackStrength = new Vector(knockbackMultiplier, 0.5, knockbackMultiplier);
 
                     player.setVelocity(knockbackDirection.multiply(knockbackStrength));
+
+                    this.combatConfig.getCombatBlockedRegionEnterMessage()
+                            .forEach(message -> message.send(player, "region", region.getId()));
                 });
     }
 
