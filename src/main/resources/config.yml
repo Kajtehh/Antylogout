@@ -1,4 +1,5 @@
 combat-bypass-permission: "antylogout.bypass"
+
 combat-duration: 20
 
 combat-message:
@@ -12,29 +13,37 @@ combat-end-message:
       content: "&aTwoja walka dobiegla konca. Mozesz juz sie wylogowac!"
 
 combat-start-notifications-enabled: true
+
 combat-start-message-attacker:
     type: CHAT
     content: "&7Rozpoczynasz walke z &f{victim}"
+
 combat-start-message-victim:
     type: CHAT
     content: "&7Zostales zaatakowany/a przez &f{attacker}&7. Jestes teraz w walce, nie mozesz sie teraz wylogowac!"
 
 remove-combat-on-opponent-death: true
+
 remove-combat-message:
     - type: CHAT
       content: "&7Twoj oponent &f{opponent} &7zginal. Twoja walka sie konczy!"
 
 combat-from-mobs: true
+
 combat-from-projectiles: true
 
 commands-blocked-during-combat: true
+
 combat-command-whitelist: ["msg", "r", "reply"]
+
 combat-command-blocked-message:
     - type: TITLE
       content: "&c&l✖ \n &7Nie mozesz uzyc komendy &f&n{command}&r&7 podczas walki!"
 
 combat-blocked-regions: ["spawn"]
+
 combat-blocked-region-knockback-multiplier: 1
+
 combat-blocked-region-enter-message:
     - type: CHAT
       content: "&c&l✖ &8&l| &7Nie mozesz wejsc na &fteren&7 regionu &f&n{region}&r&7 podczas walki!"

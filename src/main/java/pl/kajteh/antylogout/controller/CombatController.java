@@ -13,7 +13,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pl.kajteh.antylogout.CombatCache;
 import pl.kajteh.antylogout.config.CombatConfig;
-import pl.kajteh.antylogout.util.EntityUtil;
 
 import java.util.UUID;
 
@@ -83,12 +82,16 @@ public class CombatController implements Listener {
             return;
         }
 
-        if(attacker instanceof Player && !this.combatCache.getCombat(attacker.getUniqueId()).isPresent()) {
-            this.combatConfig.getCombatStartMessageAttacker().send((Player) attacker, "victim", EntityUtil.getEntityName(victim));
+        if(!(attacker instanceof Player) || !(victim instanceof Player)) {
+            return;
         }
 
-        if(victim instanceof Player && !this.combatCache.getCombat(victim.getUniqueId()).isPresent()) {
-            this.combatConfig.getCombatStartMessageVictim().send((Player) victim, "attacker", EntityUtil.getEntityName(attacker));
+        if(!this.combatCache.getCombat(attacker.getUniqueId()).isPresent()) {
+            this.combatConfig.getCombatStartMessageAttacker().send((Player) attacker, "victim", victim.getName());
+        }
+
+        if(!this.combatCache.getCombat(victim.getUniqueId()).isPresent()) {
+            this.combatConfig.getCombatStartMessageVictim().send((Player) victim, "attacker", attacker.getName());
         }
     }
 
@@ -108,7 +111,7 @@ public class CombatController implements Listener {
     }
 
     private void handleCombatRemoval(Entity entity, boolean isPlayer) {
-        if(entity == null) {
+        if(entity == null || entity instanceof Player) {
             return;
         }
 

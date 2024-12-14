@@ -35,12 +35,7 @@ public class CombatRegionController implements Listener {
         final Location to = event.getTo();
         final Location from = event.getFrom();
 
-        if (to == null || from.distance(to) == 0 || !this.combatCache.getCombat(player.getUniqueId()).isPresent()) {
-            return;
-        }
-
-        if (player.hasPermission(this.combatConfig.getCombatBypassPermission())
-                || !this.combatCache.getCombat(player.getUniqueId()).isPresent()) {
+        if (to == null || from.distance(to) == 0 || !this.combatCache.getCombat(player.getUniqueId()).isPresent() || player.hasPermission(this.combatConfig.getCombatBypassPermission())) {
             return;
         }
 
