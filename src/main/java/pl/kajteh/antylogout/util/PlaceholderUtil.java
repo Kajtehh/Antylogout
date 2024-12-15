@@ -1,6 +1,5 @@
 package pl.kajteh.antylogout.util;
 
-import java.util.Collections;
 import java.util.Map;
 
 public class PlaceholderUtil {
@@ -10,9 +9,5 @@ public class PlaceholderUtil {
             content = content.replace(String.format("{%s}", entry.getKey()), entry.getValue().toString());
         }
         return content;
-    }
-
-    public static String replacePlaceholder(String content, String key, Object value) {
-        return replacePlaceholder(content, Collections.singletonMap(key, value));
     }
 }

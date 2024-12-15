@@ -111,7 +111,7 @@ public class CombatController implements Listener {
     }
 
     private void handleCombatRemoval(Entity entity, boolean isPlayer) {
-        if(entity == null || entity instanceof Player) {
+        if(entity == null) {
             return;
         }
 
@@ -121,7 +121,7 @@ public class CombatController implements Listener {
             this.combatCache.removeCombat(entityId);
         }
 
-        if (!this.combatConfig.isRemoveCombatOnOpponentDeath()) {
+        if (!this.combatConfig.isRemoveCombatOnOpponentDeath() || !(entity instanceof Player)) {
             return;
         }
 
@@ -140,6 +140,10 @@ public class CombatController implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
+
+        if(!this.combatCache.getCombat(player.getUniqueId()).isPresent()) {
+            return;
+        }
 
         if (!this.hasBypassPermission(player)) {
             player.setHealth(0);
