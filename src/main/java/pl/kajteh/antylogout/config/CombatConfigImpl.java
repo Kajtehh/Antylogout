@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 public class CombatConfigImpl implements CombatConfig{
 
     private final CombatPlugin plugin;
-    private final FileConfiguration configuration;
+    private FileConfiguration configuration;
 
     public CombatConfigImpl(CombatPlugin plugin) {
         this.plugin = plugin;
-
+        
         plugin.saveDefaultConfig();
 
         this.configuration = plugin.getConfig();
@@ -125,6 +125,7 @@ public class CombatConfigImpl implements CombatConfig{
     @Override
     public void reload() {
         this.plugin.reloadConfig();
+        this.configuration = this.plugin.getConfig();
     }
 
     private Message getMessage(String path) {

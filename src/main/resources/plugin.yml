@@ -3,6 +3,7 @@ version: '${project.version}'
 main: pl.kajteh.antylogout.CombatPlugin
 api-version: '1.13'
 softdepend: ["WorldGuard", "WorldEdit"]
+website: https://discord.gg/visualcode
 commands:
     antylogout:
         aliases: ["combat", "antilogout"]

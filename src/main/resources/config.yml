@@ -1,49 +1,83 @@
+#
+# ░█████╗░███╗░░██╗████████╗██╗░░░██╗██╗░░░░░░█████╗░░██████╗░░█████╗░██╗░░░██╗████████╗
+# ██╔══██╗████╗░██║╚══██╔══╝╚██╗░██╔╝██║░░░░░██╔══██╗██╔════╝░██╔══██╗██║░░░██║╚══██╔══╝
+# ███████║██╔██╗██║░░░██║░░░░╚████╔╝░██║░░░░░██║░░██║██║░░██╗░██║░░██║██║░░░██║░░░██║░░░
+# ██╔══██║██║╚████║░░░██║░░░░░╚██╔╝░░██║░░░░░██║░░██║██║░░╚██╗██║░░██║██║░░░██║░░░██║░░░
+# ██║░░██║██║░╚███║░░░██║░░░░░░██║░░░███████╗╚█████╔╝╚██████╔╝╚█████╔╝╚██████╔╝░░░██║░░░
+# ╚═╝░░╚═╝╚═╝░░╚══╝░░░╚═╝░░░░░░╚═╝░░░╚══════╝░╚════╝░░╚═════╝░░╚════╝░░╚═════╝░░░░╚═╝░░░
+#
+# by Kajteh
+# https://discord.gg/visualcode
+# https://kajteh.pl
+#
+# RECODE VERSION
+#
+# Message types: CHAT, ACTION_BAR, TITLE, NONE
+#
+
+# Uprawnienie, które pozwala ominąć system anty-logout
 combat-bypass-permission: "antylogout.bypass"
 
+# Czas trwania walki (w sekundach)
 combat-duration: 20
 
+# Wiadomość wyświetlana podczas trwania walki
 combat-message:
-    type: ACTION_BAR
+    type: ACTION_BAR # Typ wiadomości (pasek akcji)
     content: "&8&l●●● &4&lANTY-LOGOUT &8(&c{time}s&8) &8&l●●●"
 
+# Wiadomości wyświetlane po zakończeniu walki
 combat-end-message:
-    - type: ACTION_BAR
+    - type: ACTION_BAR # Wiadomość na pasku akcji
       content: "&aTwoja walka dobiegla konca. Mozesz juz sie wylogowac!"
-    - type: CHAT
+    - type: CHAT # Wiadomość na czacie
       content: "&aTwoja walka dobiegla konca. Mozesz juz sie wylogowac!"
 
+# Czy wysyłać powiadomienia o rozpoczęciu walki
 combat-start-notifications-enabled: true
 
+# Wiadomość dla atakującego po rozpoczęciu walki
 combat-start-message-attacker:
-    type: CHAT
-    content: "&7Rozpoczynasz walke z &f{victim}"
+    type: CHAT # Wiadomość na czacie
+    content: "&7Rozpoczynasz walke z &f{victim}&7!"
 
+# Wiadomość dla ofiary po rozpoczęciu walki
 combat-start-message-victim:
-    type: CHAT
+    type: CHAT # Wiadomość na czacie
     content: "&7Zostales zaatakowany/a przez &f{attacker}&7. Jestes teraz w walce, nie mozesz sie teraz wylogowac!"
 
+# Czy walka kończy się po śmierci przeciwnika
 remove-combat-on-opponent-death: true
 
+# Wiadomość po śmierci przeciwnika
 remove-combat-message:
-    - type: CHAT
+    - type: CHAT # Wiadomość na czacie
       content: "&7Twoj oponent &f{opponent} &7zginal. Twoja walka sie konczy!"
 
+# Czy walka może rozpocząć się od ataku przez moby
 combat-from-mobs: true
 
+# Czy walka może rozpocząć się od pocisków (np. strzał)
 combat-from-projectiles: true
 
+# Czy komendy są blokowane podczas walki
 commands-blocked-during-combat: true
 
+# Lista dozwolonych komend podczas walki
 combat-command-whitelist: ["msg", "r", "reply"]
 
+# Wiadomość przy próbie użycia zablokowanej komendy
 combat-command-blocked-message:
-    - type: TITLE
+    - type: TITLE # Wiadomość w formie tytułu
       content: "&c&l✖ \n &7Nie mozesz uzyc komendy &f&n{command}&r&7 podczas walki!"
 
+# Lista regionów, na które nie można wchodzić podczas walki
 combat-blocked-regions: ["spawn"]
 
+# Mnożnik odrzutu przy próbie wejścia do zablokowanego regionu
 combat-blocked-region-knockback-multiplier: 1
 
+# Wiadomość przy próbie wejścia do zablokowanego regionu podczas walki
 combat-blocked-region-enter-message:
-    - type: CHAT
+    - type: CHAT # Wiadomość na czacie
       content: "&c&l✖ &8&l| &7Nie mozesz wejsc na &fteren&7 regionu &f&n{region}&r&7 podczas walki!"

@@ -26,7 +26,7 @@ public class CombatCommand implements CommandExecutor, TabCompleter {
     private static final Message ARGS_NOT_FOUND_MESSAGE = new Message("&cCommand not found. &cInvalid args &4{args}&c!");
     private static final Message TARGET_NOT_FOUND_MESSAGE = new Message("&cTarget &4{target}&c was not found.");
     private static final Message COMBAT_ADD_MESSAGE = new Message("&cCombat added to &4{player}&c!");
-    private static final Message COMBAT_REMOVE_MESSAGE = new Message("&cCombat added to &4{player}&c!");
+    private static final Message COMBAT_REMOVE_MESSAGE = new Message("&cCombat removed from &4{player}&c!");
     private static final Message TARGET_IS_NOT_IN_COMBAT = new Message("&cTarget isn't in combat.");
 
     public CombatCommand(CombatConfig combatConfig, CombatCache combatCache) {
@@ -47,7 +47,7 @@ public class CombatCommand implements CommandExecutor, TabCompleter {
         }
 
         if(args[0].equalsIgnoreCase("reload")) {
-            this.combatConfig.reload();
+            this.combatConfig.reload(); // TODO fix this
 
             RELOAD_MESSAGE.send(sender);
             return true;

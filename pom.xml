@@ -6,7 +6,7 @@
 
     <groupId>pl.kajteh</groupId>
     <artifactId>antylogout</artifactId>
-    <version>1.0</version>
+    <version>1.0-RECODE</version>
     <packaging>jar</packaging>
 
     <name>Antylogout</name>
