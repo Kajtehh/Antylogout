@@ -4,11 +4,11 @@ import pl.kajteh.antylogout.CombatCache;
 import pl.kajteh.antylogout.CombatPlugin;
 import pl.kajteh.antylogout.config.CombatConfig;
 
-public class AntylogoutAPIImpl implements AntylogoutAPI{
+public class AntylogoutApiImpl implements AntylogoutApi {
 
     private final CombatPlugin plugin;
 
-    public AntylogoutAPIImpl(CombatPlugin plugin) {
+    public AntylogoutApiImpl(CombatPlugin plugin) {
         this.plugin = plugin;
     }
 

@@ -3,8 +3,8 @@ package pl.kajteh.antylogout;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.kajteh.antylogout.api.AntylogoutAPI;
-import pl.kajteh.antylogout.api.AntylogoutAPIImpl;
+import pl.kajteh.antylogout.api.AntylogoutApi;
+import pl.kajteh.antylogout.api.AntylogoutApiImpl;
 import pl.kajteh.antylogout.config.CombatConfig;
 import pl.kajteh.antylogout.config.CombatConfigImpl;
 import pl.kajteh.antylogout.controller.CombatRegionController;
@@ -16,15 +16,15 @@ public final class CombatPlugin extends JavaPlugin {
 
     private static final int BSTATS_PLUGIN_ID = 24122;
 
-    private AntylogoutAPI api;
+    private AntylogoutApi api;
     private CombatCache combatCache;
     private CombatConfig combatConfig;
 
     @Override
     public void onEnable() {
-        this.api = new AntylogoutAPIImpl(this);
+        this.api = new AntylogoutApiImpl(this);
 
-        this.getServer().getServicesManager().register(AntylogoutAPI.class, this.api, this, ServicePriority.Normal);
+        this.getServer().getServicesManager().register(AntylogoutApi.class, this.api, this, ServicePriority.Normal);
 
         this.combatConfig = new CombatConfigImpl(this);
         this.combatCache = new CombatCache();
@@ -54,7 +54,7 @@ public final class CombatPlugin extends JavaPlugin {
         return this.combatConfig;
     }
 
-    public AntylogoutAPI getApi() {
+    public AntylogoutApi getApi() {
         return this.api;
     }
 }
